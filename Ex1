@@ -1,0 +1,130 @@
+public class Ex1 {
+
+    /**
+     * Convert the given number (num) to a decimal representation (as int).
+     * If the given number is not in a valid format, returns -1.
+     * @param num a String representing a number in basis [2,16]
+     * @return the decimal representation or -1 if invalid.
+     */
+    public static int number2Int(String num) {
+        int ans = -1;
+        if (isNumber(num)) {
+            String[] parts = num.split("b");
+            String number = parts[0];
+            String base1 = parts[1];
+
+            try {
+                // Base is parsed as hexadecimal because base can be from 2 to 16
+                int base = Integer.parseInt(base1, 16);
+                return Integer.parseInt(number, base); // Convert to decimal using the base
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * This static function checks if the given String (g) is in a valid "number" format.
+     * @param a a String representing a number
+     * @return true if the given String is in a valid number format
+     */
+    public static boolean isNumber(String a) {
+        if (a == null || !a.contains("b")) {
+            return false;
+        }
+        String[] parts = a.split("b");
+        if (parts.length != 2) {
+            return false;
+        }
+
+        String number = parts[0];
+        String base1 = parts[1];
+        int base;
+        try {
+            base = Integer.parseInt(base1, 16);
+            if (base < 2 || base > 16) {
+                return false;
+            }
+            for (char c : number.toCharArray()) {
+                if (!Character.isDigit(c) && !isValidCharForBase(c, base)) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the character is valid for the given base.
+     * @param c character to check
+     * @param base the base of the number
+     * @return true if valid for the base
+     */
+    private static boolean isValidCharForBase(char c, int base) {
+        int value = Character.digit(c, 16);
+        return value >= 0 && value < base;
+    }
+
+    /**
+     * Calculate the number representation (in base) of the given natural number (represented as an integer).
+     * If num<0 or base is not in [2,16], the function should return "" (empty String).
+     * @param num the natural number (includes 0).
+     * @param base the base [2,16]
+     * @return a String representing a number (in base) equal to num, or an empty String for invalid input.
+     */
+    public static String int2Number(int num, int base) {
+        if (num < 0 || base < 2 || base > 16) {
+            return ""; // Invalid input case
+        }
+
+        if (num == 0) {
+            return "0"; // Special case for 0
+        }
+
+        StringBuilder result = new StringBuilder();
+        while (num > 0) {
+            int remainder = num % base;
+            result.insert(0, Character.forDigit(remainder, 16)); // Convert remainder to character and prepend to result
+            num /= base;
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * Checks if the two numbers have the same value.
+     * @param n1 first number
+     * @param n2 second number
+     * @return true if the two numbers have the same values.
+     */
+    public static boolean equals(String n1, String n2) {
+        int num1 = number2Int(n1);
+        int num2 = number2Int(n2);
+        return num1 == num2;
+    }
+
+    /**
+     * This static function searches for the array index with the largest number (in value).
+     * In case there are more than one maximum - returns the first index.
+     * Note: you can assume that the array is not null and is not empty, yet it may contain null or invalid numbers (with value -1).
+     * @param arr an array of numbers
+     * @return the index in the array with the largest number (in value).
+     */
+    public static int maxIndex(String[] arr) {
+        int maxIndex = -1;
+        int maxValue = Integer.MIN_VALUE;
+
+        for (int i = 0; i < arr.length; i++) {
+            int value = number2Int(arr[i]);
+            if (value != -1 && value > maxValue) {
+                maxValue = value;
+                maxIndex = i;
+            }
+        }
+
+        return maxIndex;
+    }
+}
