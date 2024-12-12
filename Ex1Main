@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+/**
+ * Intro2CS, Ex1 - very basic "main template"
+ * Make sure your implementation of this main performs as the Ex1Sol.jar solution and implements all needed functions.
+ *
+ */
+public class Ex1Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String num1 = "", num2="", quit = "quit";
+
+        // Start the main loop, asking for num1 and num2
+        while (!num1.equals(quit) && !num2.equals(quit)) {
+            System.out.println();
+            System.out.println("Ex1 class solution:");
+            System.out.println("Enter a string as number#1 (or \"quit\" to end the program): ");
+            num1 = sc.next();
+
+            // Exit if the user types "quit"
+            if (num1.equals(quit)) {
+                break;
+            }
+
+            // Ask for the second number
+            System.out.println("Enter a string as number#2 (or \"quit\" to end the program): ");
+            num2 = sc.next();
+
+            // Exit if the user types "quit"
+            if (num2.equals(quit)) {
+                break;
+            }
+
+            // Perform operations only if both numbers are valid
+            if (Ex1.isNumber(num1) && Ex1.isNumber(num2)) {
+                // Convert num1 and num2 to decimal
+                int decimal1 = Ex1.number2Int(num1);
+                int decimal2 = Ex1.number2Int(num2);
+
+                System.out.println("Number #1 in decimal: " + decimal1);
+                System.out.println("Number #2 in decimal: " + decimal2);
+
+                // Compare the two numbers
+                if (Ex1.equals(num1, num2)) {
+                    System.out.println("The two numbers are equal.");
+                } else {
+                    System.out.println("The two numbers are not equal.");
+                }
+
+                // Perform any additional operations like printing the maximum value
+                String[] numbers = {num1, num2};
+                int maxIndex = Ex1.maxIndex(numbers);
+                System.out.println("The index of the largest number in value is: " + maxIndex);
+            } else {
+                System.out.println("Invalid input. Please enter valid number strings.");
+            }
+        }
+
+        System.out.println("Quitting now...");
+        sc.close(); // Don't forget to close the scanner to avoid resource leak
+    }
+}
