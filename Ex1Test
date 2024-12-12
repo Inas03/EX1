@@ -1,0 +1,89 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * This JUnit class represents a very partial test class for Ex1.
+ * Make sure you complete all the needed JUnits
+ */
+public class Ex1Test {
+
+    @Test
+    void computeNumberTest() {
+        String s2 = "1011b2";
+        int v = Ex1.number2Int(s2);
+        assertEquals(v, 11); // binary 1011 is 11 in decimal
+
+        String s10 = "1011bA";
+        v = Ex1.number2Int(s10);
+        s2 = Ex1.int2Number(v, 2);
+        int v2 = Ex1.number2Int(s2);
+        assertEquals(v, v2);
+
+        assertTrue(Ex1.equals(s10, s2));
+    }
+@Test
+    void isBasisNumberTest() {
+        String[] good = {"1", "1b2", "01b2", "123bA", "ABbG", "0bA"};
+        for (String num : good) {
+            boolean ok = Ex1.isNumber(num);
+            assertTrue(ok, num + " should be valid");
+        }
+
+        String[] not_good = {"b2", "2b2", "1G3bG", " BbG", "0bbA", "abB", "!@b2", "A", "1bb2"};
+        for (String num : not_good) {
+            boolean not_ok = Ex1.isNumber(num);
+            assertFalse(not_ok, num + " should be invalid");
+        }
+    }
+@Test
+    void int2NumberTest() {
+        // Valid conversion tests
+        assertEquals("1010", Ex1.int2Number(10, 2));
+        assertEquals("A", Ex1.int2Number(10, 16));
+        assertEquals("0", Ex1.int2Number(0, 2));
+        assertEquals("", Ex1.int2Number(-10, 2));
+
+        // Base edge case tests
+        assertEquals("101", Ex1.int2Number(5, 2));
+        assertEquals("3", Ex1.int2Number(3, 4));
+        assertEquals("", Ex1.int2Number(3, 1));
+        assertEquals("", Ex1.int2Number(5, 17));
+    }
+@Test
+    void maxIndexTest() {
+
+        String[] arr1 = {"1011b2", "101b2", "111b2"};
+        assertEquals(0, Ex1.maxIndex(arr1));
+
+
+        String[] arr2 = {"1011b2", "invalidb2", "111b2"};
+        assertEquals(2, Ex1.maxIndex(arr2));
+
+
+        String[] arr3 = {"invalidb2", "invalidb3"};
+        assertEquals(-1, Ex1.maxIndex(arr3));
+
+        String[] arr4 = {null, "101b2", null};
+        assertEquals(1, Ex1.maxIndex(arr4));
+    }
+
+    // Additional Tests
+    @Test
+    void equalsTest() {
+        String s1 = "1011b2";
+        String s2 = "1011b2";
+        String s3 = "1010b2";
+
+        assertTrue(Ex1.equals(s1, s2));
+        assertFalse(Ex1.equals(s1, s3));
+    }
+@Test
+    void number2IntInvalidTest() {
+        // Test invalid numbers
+        assertEquals(-1, Ex1.number2Int("invalidb2"));
+        assertEquals(-1, Ex1.number2Int("1234b20"));
+        assertEquals(-1, Ex1.number2Int("1b1"));
+        assertEquals(-1, Ex1.number2Int("b2"));
+    }
+}
